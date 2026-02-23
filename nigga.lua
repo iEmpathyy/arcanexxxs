@@ -309,7 +309,7 @@ do -- Initalize
                             do -- Boxes
                                 Box.Position = UDim2.new(0, Pos.X - w / 2, 0, Pos.Y - h / 2)
                                 Box.Size = UDim2.new(0, w, 0, h)
-                                Box.Visible = ESP.Drawing.Boxes.Full.Enabled or ESP.Drawing.Boxes.Filled.EnabledBox.Visible = ESP.Drawing.Boxes.Full.Enabled;
+                                Box.Visible = ESP.Drawing.Boxes.Full.Enabled or ESP.Drawing.Boxes.Filled.Enabled
 
                                 -- Gradient
                                 if ESP.Drawing.Boxes.Filled.Enabled then
