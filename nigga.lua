@@ -49,6 +49,13 @@ local ESP = {
             Width = 2.5,
             Gradient = true, GradientRGB1 = Color3.fromRGB(200, 0, 0), GradientRGB2 = Color3.fromRGB(60, 60, 125), GradientRGB3 = Color3.fromRGB(119, 120, 255), 
         },
+        Tracers = {
+        Enabled = false,
+        Position = "Bottom", -- Bottom, Center, Top
+        Thickness = 1.5,
+        Color = Color3.fromRGB(255,255,255),
+        },
+        
         Boxes = {
             Animate = true,
             RotationSpeed = 300,
@@ -172,6 +179,12 @@ do -- Initalize
         local BottomRightDown = Functions:Create("Frame", {Parent = ScreenGui, BackgroundColor3 = ESP.Drawing.Boxes.Corner.RGB, Position = UDim2.new(0, 0, 0, 0)})
         local Flag1 = Functions:Create("TextLabel", {Parent = ScreenGui, Position = UDim2.new(1, 0, 0, 0), Size = UDim2.new(0, 100, 0, 20), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(255, 255, 255), Font = Enum.Font.Code, TextSize = ESP.FontSize, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0)})
         local Flag2 = Functions:Create("TextLabel", {Parent = ScreenGui, Position = UDim2.new(1, 0, 0, 0), Size = UDim2.new(0, 100, 0, 20), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(255, 255, 255), Font = Enum.Font.Code, TextSize = ESP.FontSize, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0)})
+
+        local Tracer = Drawing.new("Line")
+        Tracer.Visible = false
+        Tracer.Thickness = ESP.Drawing.Tracers.Thickness
+        Tracer.Color = ESP.Drawing.Tracers.Color
+        Tracer.Transparency = 1
         --local DroppedItems = Functions:Create("TextLabel", {Parent = ScreenGui, AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(255, 255, 255), Font = Enum.Font.Code, TextSize = ESP.FontSize, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.fromRGB(0, 0, 0)})
         --
         local Updater = function()
@@ -196,7 +209,9 @@ do -- Initalize
                 Flag1.Visible = false;
                 Chams.Enabled = false;
                 Flag2.Visible = false;
+                Tracer.Visible = false
                 if not plr then
+                    Tracer:Remove()
                     ScreenGui:Destroy();
                     Connection:Disconnect();
                 end
@@ -213,6 +228,25 @@ do -- Initalize
                     local HRP = plr.Character.HumanoidRootPart
                     local Humanoid = plr.Character:WaitForChild("Humanoid");
                     local Pos, OnScreen = Cam:WorldToScreenPoint(HRP.Position)
+                        -- TRACER LOGIC
+                    if ESP.Drawing.Tracers.Enabled and OnScreen then
+                        local viewport = Cam.ViewportSize
+                        local fromPosition
+                    
+                        if ESP.Drawing.Tracers.Position == "Bottom" then
+                            fromPosition = Vector2.new(viewport.X / 2, viewport.Y)
+                        elseif ESP.Drawing.Tracers.Position == "Top" then
+                            fromPosition = Vector2.new(viewport.X / 2, 0)
+                        else -- Center
+                            fromPosition = Vector2.new(viewport.X / 2, viewport.Y / 2)
+                        end
+                    
+                        Tracer.From = fromPosition
+                        Tracer.To = Vector2.new(Pos.X, Pos.Y)
+                        Tracer.Visible = true
+                    else
+                        Tracer.Visible = false
+                    end
                     local Dist = (Cam.CFrame.Position - HRP.Position).Magnitude / 3.5714285714
                     
                     if OnScreen and Dist <= ESP.MaxDistance then
