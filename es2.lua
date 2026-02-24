@@ -300,8 +300,8 @@ do -- Initalize
                         end
 
                         -- Teamcheck
-                        if ESP.TeamCheck and plr ~= lplayer and ((lplayer.Team ~= plr.Team and plr.Team) or (not lplayer.Team and not plr.Team)) and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("Humanoid") then
-
+                        if plr ~= lplayer and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("Humanoid") and (not ESP.TeamCheck or (lplayer.Team ~= plr.Team)) then
+                                
                             do -- Chams
                                 Chams.Adornee = plr.Character
                                 Chams.Enabled = ESP.Drawing.Chams.Enabled
