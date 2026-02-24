@@ -2,7 +2,7 @@ local Workspace, RunService, Players, CoreGui, Lighting = cloneref(game:GetServi
 
 local ESP = {
     Enabled = true,
-    TeamCheck = false,
+    TeamCheck = true,
     MaxDistance = 1300,
     FontSize = 11,
     FadeOut = {
